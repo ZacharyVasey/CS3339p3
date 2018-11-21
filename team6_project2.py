@@ -504,10 +504,11 @@ class Dissemble(object):
 #    Class Simulator
 ##################################################################################
 import copy
+from reg import RegFile
 class Simulator(object):
 	
 	def __init__(self, opCodeStr, isInstr, insType, data, rmRegNum, shamNum, rnRegNum, rdRtRegNum, immNum,
-	             addrNum, shiftNum, litInstr, memLines, numLinesText):
+	             addrNum, shiftNum, litInstr, memLines, numLinesText, regFile):
 		# Set up cycle sequence list.
 		self.cycles = []  # Holds list of cycles, each with state data.  Each CC results in new cycle.
 		# Set up BinData column copies.
@@ -525,7 +526,7 @@ class Simulator(object):
 		self.litInstr = litInstr
 		self.memLines = memLines
 		self.numLinesText = numLinesText
-	
+		self.regFile = regFile
 	###############################################################################
 	#   Class Cycle:  a single cycle, and the register/data states at that time.
 	###############################################################################
@@ -558,6 +559,8 @@ class Simulator(object):
 		# print '\trdVal:', self.rdVal    #TESTPRINT
 		nc.regState[self.rd] = self.rdVal
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -571,6 +574,8 @@ class Simulator(object):
 		self.rdVal = self.rnVal - self.rmVal  # Get value to save to register.
 		nc.regState[self.rd] = self.rdVal
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -590,6 +595,8 @@ class Simulator(object):
 		# print '\trdVal:', self.rdVal        #TESTPRINT
 		nc.regState[self.rd] = self.rdVal
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -603,6 +610,8 @@ class Simulator(object):
 		self.rdVal = (self.rnVal % (1 << 64)) >> self.shiftVal
 		nc.regState[self.rd] = self.rdVal
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -625,6 +634,8 @@ class Simulator(object):
 		# print '\trdVal:', self.thisNum      # TESTPRINT
 		nc.regState[self.rd] = self.thisNum
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -639,6 +650,8 @@ class Simulator(object):
 		self.thisNum = self.rmVal | self.rnVal
 		nc.regState[self.rd] = self.thisNum
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -653,6 +666,8 @@ class Simulator(object):
 		self.thisNum = self.rmVal ^ self.rnVal
 		nc.regState[self.rd] = self.thisNum
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -665,6 +680,8 @@ class Simulator(object):
 		self.rdVal = self.rnVal >> self.shiftVal
 		nc.regState[self.rd] = self.rdVal
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rdVal
 	
 	###############################################################################
 	###############################################################################
@@ -695,6 +712,8 @@ class Simulator(object):
 		# print '\t\tnc.PC:', nc.PC   # TESTPRINT
 		# print '\t\tself.nextCyc.PC:', self.nextCyc.PC       # TESTPRINT
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rnVal + self.immVal
 	
 	###############################################################################
 	###############################################################################
@@ -710,6 +729,8 @@ class Simulator(object):
 		self.rnVal = self.nextCyc.regState[self.rn]
 		nc.regState[self.rd] = self.rnVal - self.immVal
 		nc.litIns = self.litInstr[x]
+		
+		self.regFile.regFileList[self.rd] = self.rnVal - self.immVal
 	
 	###############################################################################
 	###############################################################################
@@ -742,6 +763,8 @@ class Simulator(object):
 			rd = self.rdRtRegNum[x]
 			nc.regState[rd] = load
 			nc.litIns = self.litInstr[x]
+			
+			self.regFile.regFileList[rd] = load
 		else:
 			popNum = datAdr - len(nc.datState)
 			for x in range(0, popNum):
@@ -752,6 +775,8 @@ class Simulator(object):
 			rd = self.rdRtRegNum[x]
 			nc.regState[rd] = load
 			nc.litIns = self.litInstr[x]
+			
+			self.regFile.regFileList[rd] = load
 			
 	
 	###############################################################################
@@ -788,10 +813,11 @@ class Simulator(object):
 			popNum = datIndexEnd - len(nc.datState) + 1
 			# print '\tpopNum:', popNum                       #TESPRINT
 			# print '\trdVal:', rdVal                         #TESPRINT
+			nc.litIns = self.litInstr[x]
 			for x in range(0, popNum):
 				nc.datState.append(0)
 			nc.datState[datIndexEnd] = rdVal
-			nc.litIns = self.litInstr[x]
+			
 
 	###############################################################################
 	###############################################################################
@@ -821,6 +847,8 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		nc.regState[rd] = 0
 		nc.regState[rd] = self.immNum[x] * (2 ** self.shiftNum[x])
+		
+		self.regFile.regFileList[rd] = self.immNum[x] * (2 ** self.shiftNum[x])
 	
 	###############################################################################
 	###############################################################################
@@ -834,15 +862,21 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		if (self.shiftNum[x] == 0):
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_0
+			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_0
 		elif (self.shiftNum[x] == 1):
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_1
+			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_1
 		elif (self.shiftNum[x] == 2):
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_2
+			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_2
 		else:
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_3
+			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_3
 		# TESPRINT
 		# print "shift num: ", self.shiftNum[x]
 		nc.regState[rd] = nc.regState[rd] + (self.immNum[x] * (2 ** self.shiftNum[x]))
+		
+		self.regFile.regFileList[rd] = regFile.regFileList[rd] + (self.immNum[x] * (2 ** self.shiftNum[x]))
 	
 	###############################################################################
 	###############################################################################
@@ -1048,8 +1082,11 @@ class Simulator(object):
 		self.writeOut(binData)
 
 import sys, getopt
+from reg import RegFile
 def main():
-	binData = BinData() # inData holds all the binary and assembled data.
+	binData = BinData()         # inData holds all the binary and assembled data.
+	regFile = RegFile()         # regFile holds the latest register state.
+	
 	# Get command line data
 	for i in range(len(sys.argv)):
 		if (sys.argv[i] == '-i' and i < (len(sys.argv) - 1)):
@@ -1070,13 +1107,19 @@ def main():
 	#print binData.outFile
 	sim = Simulator(binData.opCodeStr, binData.isInstr, binData.insType, binData.data, binData.rmRegNum,
 	                binData.shamNum, binData.rnRegNum, binData.rdRtRegNum, binData.immNum, binData.addrNum,
-	                binData.shiftNum, binData.litInstr, binData.memLines, binData.numLinesText)
+	                binData.shiftNum, binData.litInstr, binData.memLines, binData.numLinesText, regFile)
 	sim.run(binData)
 	
-	# TESTPRINT
-	print 'LIT INSTRUCTIONS'
-	for x, ins in enumerate(sim.litInstr):
-		print x, '   ', ins
+	# # TESTPRINT
+	# print 'LIT INSTRUCTIONS'
+	# for x, ins in enumerate(sim.litInstr):
+	# 	print x, '   ', ins
+	
+	# TESTPRINT - Register file in RegFile object.
+	print 'REGISTER FILE'
+	for el in regFile.regFileList:
+		print el, ',  ',
+		
 if __name__== "__main__":
 	main()
 
