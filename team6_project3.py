@@ -477,7 +477,7 @@ class Dissemble(object):
 			startLine += line
 			binData.finalText += startLine + '\n'
 		# print lines
-		print binData.finalText
+		# print binData.finalText
 	
 	##################################################################################
 	#   writeOut:  writes final product to text file.
@@ -561,6 +561,9 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rdVal
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	
 	###############################################################################
 	###############################################################################
@@ -576,7 +579,9 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doLSL(self, nc, x):
@@ -597,7 +602,9 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doLSR(self, nc, x):
@@ -612,7 +619,9 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doAND(self, nc, x):
@@ -635,8 +644,10 @@ class Simulator(object):
 		nc.regState[self.rd] = self.thisNum
 		nc.litIns = self.litInstr[x]
 		
-		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		self.regFile.regFileList[self.rd] = self.thisNum
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doORR(self, nc, x):
@@ -651,8 +662,10 @@ class Simulator(object):
 		nc.regState[self.rd] = self.thisNum
 		nc.litIns = self.litInstr[x]
 		
-		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		self.regFile.regFileList[self.rd] = self.thisNum
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doEOR(self, nc, x):
@@ -667,8 +680,10 @@ class Simulator(object):
 		nc.regState[self.rd] = self.thisNum
 		nc.litIns = self.litInstr[x]
 		
-		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		self.regFile.regFileList[self.rd] = self.thisNum
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doASR(self, nc, x):
@@ -682,7 +697,9 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rdVal
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doADDI(self, nc, x):
@@ -714,7 +731,9 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rnVal + self.immVal
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doSUBI(self, nc, x):
@@ -731,22 +750,24 @@ class Simulator(object):
 		nc.litIns = self.litInstr[x]
 		
 		self.regFile.regFileList[self.rd] = self.rnVal - self.immVal
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doLDUR(self, nc, x):
 		# print 'INSIDE LDUR...'
 		nc.PC = self.memLines[x]  # Increment PC to CURRENT instruction.
 		rn = self.rnRegNum[x]  # Base Address in Register #
-		print '\trn:', rn
+		# print '\trn:', rn
 		rnVal = nc.regState[rn]  # Base Address is...
-		print '\trnVal:', rnVal
+		# print '\trnVal:', rnVal
 		addr = self.addrNum[x]  # Offset
-		print '\taddr:', addr
+		# print '\taddr:', addr
 		memAdr = (addr * 4) + rnVal
 		datAdr = memAdr - nc.datStart
 		datAdr /= 4
-		print '\tdatAdr:  ', datAdr
+		# print '\tdatAdr:  ', datAdr
 		
 		# dataIndex = ((nc.datStart   - rnVal + addr) / 4)  # Fancy doings.
 		# print '\t(datStart - rnVal):', (nc.datStart - rnVal)
@@ -758,7 +779,7 @@ class Simulator(object):
 		testBound = datAdr > len(nc.datState) - 1
 		if not testBound:
 			load = nc.datState[datAdr]
-			print '\tload: ', load      # TESTPRINT
+			# print '\tload: ', load      # TESTPRINT
 			# print '\tload:', load
 			rd = self.rdRtRegNum[x]
 			nc.regState[rd] = load
@@ -770,14 +791,15 @@ class Simulator(object):
 			for x in range(0, popNum):
 				nc.datState.append(0)
 			load = nc.datState[datAdr]
-			print '\tload: ', load  # TESTPRINT
-			# print '\tload:', load
+			# print '\tload: ', load  # TESTPRINT
 			rd = self.rdRtRegNum[x]
 			nc.regState[rd] = load
 			nc.litIns = self.litInstr[x]
 			
 			self.regFile.regFileList[rd] = load
-			
+			# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+			# for el in self.regFile.regFileList:
+			# 	print el, '  ',
 	
 	###############################################################################
 	###############################################################################
@@ -849,7 +871,9 @@ class Simulator(object):
 		nc.regState[rd] = self.immNum[x] * (2 ** self.shiftNum[x])
 		
 		self.regFile.regFileList[rd] = self.immNum[x] * (2 ** self.shiftNum[x])
-	
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	###############################################################################
 	###############################################################################
 	def doMOVK(self, nc, x):
@@ -863,20 +887,36 @@ class Simulator(object):
 		if (self.shiftNum[x] == 0):
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_0
 			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_0
+			print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+			for el in self.regFile.regFileList:
+				print el, '  ',
 		elif (self.shiftNum[x] == 1):
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_1
 			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_1
+			print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+			for el in self.regFile.regFileList:
+				print el, '  ',
 		elif (self.shiftNum[x] == 2):
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_2
 			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_2
+			print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+			for el in self.regFile.regFileList:
+				print el, '  ',
 		else:
 			nc.regState[rd] = nc.regState[rd] & BIT_MASK_3
 			self.regFile.regFileList[rd] = regFile.regFileList[rd] & BIT_MASK_3
+			print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+			for el in self.regFile.regFileList:
+				print el, '  ',
 		# TESPRINT
 		# print "shift num: ", self.shiftNum[x]
 		nc.regState[rd] = nc.regState[rd] + (self.immNum[x] * (2 ** self.shiftNum[x]))
 		
 		self.regFile.regFileList[rd] = regFile.regFileList[rd] + (self.immNum[x] * (2 ** self.shiftNum[x]))
+		# # TESPRINT
+		# print '\nCYCLE: ' + str(nc.PC) + '     ' + 'INS: ' + self.litInstr[x]
+		# for el in self.regFile.regFileList:
+		# 	print el, '  ',
 	
 	###############################################################################
 	###############################################################################
@@ -1045,24 +1085,24 @@ class Simulator(object):
 	
 	def printCycle(self, clockCycle, binData):
 		'Takes an element in the cycle Register and prints it.'
-		print
-		print '======================================================================='
+		# print
+		# print '======================================================================='
 		binData.finalText += '=======================================================================' + "\n"
-		print 'Cycle ' + str(clockCycle + 1) + ':  ' + str(self.cycles[clockCycle].PC) + \
-		      '\t\t' + self.cycles[clockCycle].litIns
+		# print 'Cycle ' + str(clockCycle + 1) + ':  ' + str(self.cycles[clockCycle].PC) + \
+		#       '\t\t' + self.cycles[clockCycle].litIns
 		binData.finalText += 'Cycle ' + str(clockCycle + 1) + ':  ' + str(self.cycles[clockCycle].PC) + '\t\t' + self.cycles[clockCycle].litIns + "\n"
-		print '\nRegisters:'
+		# print '\nRegisters:'
 		binData.finalText += '\nRegisters:' + "\n"
 		z = 0
 		for x in range(0, 4):  # Prints all registers 4 rows x 8 columns
 			line = 'r' + str(z).zfill(2) + ':\t'
 			for y in range(0, 8):
 				line += str(self.cycles[clockCycle].regState[y + z]) + '\t'
-			print line
+			# print line
 			binData.finalText += line + "\n"
 			z += 8
 
-		print '\nData:' 
+		# print '\nData:'
 		binData.finalText += '\nData:' + "\n"
 		datStart = self.cycles[0].datStart
 		header = str(datStart) + ':\t'
@@ -1072,7 +1112,7 @@ class Simulator(object):
 				y += 1
 				header += '\n' + str(datStart + (y * 32)) + ':\t'
 			header += str(d) + '\t'
-		print header
+		# print header
 		binData.finalText += header + "\n"
 	
 	def printCycles(self, binData):
@@ -1116,9 +1156,13 @@ def main():
 	# 	print x, '   ', ins
 	
 	# TESTPRINT - Register file in RegFile object.
-	print 'REGISTER FILE'
-	for el in regFile.regFileList:
-		print el, ',  ',
+	# print 'REGISTER FILE'
+	# for el in regFile.regFileList:
+	# 	print el, ',  ',
+	
+	from pl import PL
+	pLine = PL(binData)
+	pLine.run()
 		
 if __name__== "__main__":
 	main()

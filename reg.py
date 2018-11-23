@@ -4,11 +4,6 @@
 #========================================================================
 class RegFile(object):
 	def __init__(self):
-		print 'Testing RegFile().init...'   # TESTPRINT
+		# print 'Testing RegFile().init...'   # TESTPRINT
 		self.regFileList = [0] * 32
 	
-
-
-
-#print 'This shouldve worked.'
-#myReg = RegFile()
