@@ -20,11 +20,11 @@ class Cache(object):
 	#   testPrint function:  prints state of cache at a moment.
 	#====================================================================
 	def testPrint(self):
-		print '\nHere is your current cache:'
+		print('\nHere is your current cache:')
 		for num, set in enumerate(self.ch):
-			print 'Set ' + str(num)
+			print('Set ' + str(num))
 			for block in set:
-				print block
+				print(block)
 				
 			
 			

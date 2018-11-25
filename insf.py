@@ -15,23 +15,23 @@ class IF(object):
 				# print opc, '  ',
 				pc = self.binData.memLines[ind]
 				# GRAB CURRENT PC FOR INST
-				print 'Current PC:   ', pc
-				print '\tpc:  ', bin(pc)
+				print('Current PC:   ', pc)
+				print('\tpc:  ', bin(pc))
 				
 				# GRAB BYTE OFFSET
 				boffMask = 0x7
 				boff = boffMask & pc
-				print '\tboff: ', boff
+				print('\tboff: ', boff)
 				
 				# GRAB TAG
 				tag = pc >> 5
-				print '\ttag:  ', tag
+				print('\ttag:  ', tag)
 
 				# GRAB SET INDEX FOR EACH INS
 				setIndex = pc >> 3
 				setMask = 0x3
 				setIndex = setMask & setIndex
-				print '\tsetIndex: ', setIndex
+				print('\tsetIndex: ', setIndex)
 				
 				
 				
