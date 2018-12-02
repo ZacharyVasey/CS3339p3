@@ -8,8 +8,36 @@
 class ArithmeticLogicUnit(object):
     def __init__(self):
         self.output = 0
-    def compute(self):
-        pass
+    def compute(self, opCodeStr, firstReg, secondReg):
+		if object.opCodeStr == 'ADD':
+			object.doADD(firstReg, secondReg)
+		elif object.opCodeStr == 'SUB':
+			self.doSUB(firstReg, secondReg)
+		elif object.opCodeStr == 'LSL':
+			self.doLSL(firstReg, secondReg)
+		elif self.opCodeStr == 'LSR':
+			self.doLSR(firstReg, secondReg)
+		elif self.opCodeStr == 'AND':
+			self.doAND(firstReg, secondReg)
+		elif self.opCodeStr == 'ORR':
+			self.doORR(firstReg, secondReg)
+		elif self.opCodeStr == 'EOR':
+			self.doEOR(firstReg, secondReg)
+		elif self.opCodeStr == 'ASR':
+			self.doASR(firstReg, secondReg)
+		elif self.opCodeStr == 'ADDI':
+			self.doADDI(firstReg, secondReg)
+		elif self.opCodeStr == 'SUBI':
+			self.doSUBI(firstReg, secondReg)
+		elif self.opCodeStr == 'MOVK':
+			self.doMOVK(firstReg, secondReg)
+		elif self.opCodeStr == 'MOVZ':
+			self.doMOVZ(firstReg, secondReg)
+		elif self.opCodeStr == 'NOP':
+			self.doNOP(firstReg, secondReg)
+		elif self.opCodeStr == 'BREAK':
+			self.doBREAK(firstReg, secondReg)
+			break
     def getOutput(self):
         return self.output
     ###############################################################################

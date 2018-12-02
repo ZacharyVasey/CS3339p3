@@ -10,6 +10,7 @@ from postalu import PostALU
 from premem import PreMEM
 from postmem import PostMEM
 from preIssueBuffer import PreIssueBuffer
+from arithmeticLogicUnit import ArithmeticLogicUnit
 
 class PL(object):
 	def __init__(self, bd):
@@ -35,18 +36,23 @@ class PL(object):
 
 		# Create Pre MEM unit
 		preMEM = PreMEM()
-
+		
 		# Create Pre MEM unit
 		preALU = PreALU()
-
+		
+		#Create ALU
+		ALU = ArithmeticLogicUnit()
+		
 		# Create post MEM unit
 		postMEM = PostMEM()
 
 		# Create post ALU unit
 		postALU = PostALU()
-
 		
+		#ALU Compute
+		ALU.compute(opCodeStr, Reg1, Reg2)
 		
-		
+		#assign output to post ALU
+		postALU.setContent(ALU.getOutput())
 		
 		print('\n======================================================================\n\n')
