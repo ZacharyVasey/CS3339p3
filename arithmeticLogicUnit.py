@@ -9,35 +9,36 @@ class ArithmeticLogicUnit(object):
     def __init__(self):
         self.output = 0
     def compute(self, opCodeStr, firstReg, secondReg):
-		if object.opCodeStr == 'ADD':
+		if opCodeStr == 'ADD':
 			object.doADD(firstReg, secondReg)
-		elif object.opCodeStr == 'SUB':
+		elif opCodeStr == 'SUB':
 			self.doSUB(firstReg, secondReg)
-		elif object.opCodeStr == 'LSL':
+		elif opCodeStr == 'LSL':
 			self.doLSL(firstReg, secondReg)
-		elif self.opCodeStr == 'LSR':
+		elif opCodeStr == 'LSR':
 			self.doLSR(firstReg, secondReg)
-		elif self.opCodeStr == 'AND':
+		elif opCodeStr == 'AND':
 			self.doAND(firstReg, secondReg)
-		elif self.opCodeStr == 'ORR':
+		elif opCodeStr == 'ORR':
 			self.doORR(firstReg, secondReg)
-		elif self.opCodeStr == 'EOR':
+		elif opCodeStr == 'EOR':
 			self.doEOR(firstReg, secondReg)
-		elif self.opCodeStr == 'ASR':
+		elif opCodeStr == 'ASR':
 			self.doASR(firstReg, secondReg)
-		elif self.opCodeStr == 'ADDI':
+		elif opCodeStr == 'ADDI':
 			self.doADDI(firstReg, secondReg)
-		elif self.opCodeStr == 'SUBI':
+		elif opCodeStr == 'SUBI':
 			self.doSUBI(firstReg, secondReg)
-		elif self.opCodeStr == 'MOVK':
+		elif opCodeStr == 'MOVK':
 			self.doMOVK(firstReg, secondReg)
-		elif self.opCodeStr == 'MOVZ':
+		elif opCodeStr == 'MOVZ':
 			self.doMOVZ(firstReg, secondReg)
-		elif self.opCodeStr == 'NOP':
+		elif opCodeStr == 'NOP':
 			self.doNOP(firstReg, secondReg)
-		elif self.opCodeStr == 'BREAK':
+		elif opCodeStr == 'BREAK':
 			self.doBREAK(firstReg, secondReg)
-			break
+        else:
+            print "error in ArithmeticLogicUnit"
     def getOutput(self):
         return self.output
     ###############################################################################
