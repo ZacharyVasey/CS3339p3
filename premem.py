@@ -1,11 +1,10 @@
-#############################################
-# Pre MEM
-# The pre-mem buffer has two entries.
-# Each entry can store an instruction with its address and data (for STUR).
-# It is managed as a FIFO queue.
-#############################################
+#====================================================================================
+# PreMem
+# 	Post ALU register. The post-ALU buffer has one entry that can store the 
+# 	instruction with the destination register ID and the result of the ALU operation
+#====================================================================================
 
-class PreMEM(object):
+class PreMem(object):
     def __init__(self):
         self.content = [''] * 2    #contents of the pre MEM
 

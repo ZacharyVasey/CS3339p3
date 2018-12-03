@@ -1,19 +1,23 @@
 from reg import RegFile
 from postmem import PostMem 
 from postalu import PostAlu
+from prealu import PreAlu
+from premem import PreMem
 from writeback import WriteBack
 
 def main():
 	regob = RegFile()
 	pmo = PostMem()
 	pao = PostAlu()
+	prao = PreAlu()
+	prmo = PreAlu()
 	wbob = WriteBack(regob, pmo, pao)
 	regob.printRegFile()
 
 	# TEST WB to write post-ALU
-	print '//============================================================='
-	print '//	WRITEBACK MODULE TEST'
-	print '//============================================================='
+	print '//=================================================================='
+	print '//	MODULE TEST - WRITEBACK - POSTMEM - POSTALU'
+	print '//=================================================================='
 	print '>>> PHASE 1: write directly to register file.\n'
 	wbob.contOff()
 	print 'Write 5 to r5.'
@@ -65,12 +69,66 @@ def main():
 	wbob.writeFromBuffs()
 	regob.printRegFile()		# Value 9 should print written to r9.
 
-
-
 	# #TESTPRINT - Direct print of register file.
 	# print
 	# for el in regob.regFile:
 	# 	print el, 
 
+	# TEST WB to write post-ALU
+	print '//=================================================================='
+	print '//	MODULE TEST - PREALU - PREMEM'
+	print '//=================================================================='
+	print '>>> PHASE 1: Test passing PC values to Pre-ALU buffer, and simul-\n' \
+			+ '-taneously update OLDEST truth value.'
+
+	suc = False
+	prao.printBuff()
+	print '\nFeed 96'
+	suc = prao.feedBuff(96)
+	print "Success:", str(suc)
+	prao.printBuff()
+	print '\nFeed 100'
+	suc = prao.feedBuff(100)
+	print "Success:", str(suc)
+	prao.printBuff()
+	print '\nFeed 104'
+	suc = prao.feedBuff(104)
+	print "Success:", str(suc)
+	prao.printBuff()
+	print "\nEmpty"
+	suc = prao.emptyBuff()
+	print "Success:", str(suc)
+	prao.printBuff()
+	print "\nEmpty"
+	suc = prao.emptyBuff()
+	print "Success:", str(suc)
+	prao.printBuff()
+	print "\nEmpty"
+	suc = prao.emptyBuff()
+	print "Success:", str(suc)
+	prao.printBuff()	
+	print "\nEmpty"
+	suc = prao.emptyBuff()
+	print "Success:", str(suc)
+	prao.printBuff()
+	print '\nFeed 104'
+	suc = prao.feedBuff(104)
+	print "Success:", str(suc)
+	prao.printBuff()
+	print "\nEmpty"
+	suc = prao.emptyBuff()
+	prao.printBuff()
+	print '\nFeed 156'
+	suc = prao.feedBuff(156)
+	print "Success:", str(suc)
+	prao.printBuff()
+	print '\nFeed 96'
+	suc = prao.feedBuff(96)
+	print "Success:", str(suc)
+	prao.printBuff()
+
+
 if __name__== "__main__":
 	main()
+	print
+	print

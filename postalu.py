@@ -1,5 +1,5 @@
 #====================================================================================
-# Class PostALU
+# PostALU
 # 	Post ALU register. The post-ALU buffer has one entry that can store the 
 # 	instruction with the destination register ID and the result of the ALU operation
 #====================================================================================
