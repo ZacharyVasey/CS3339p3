@@ -10,7 +10,7 @@ def main():
 	pmo = PostMem()
 	pao = PostAlu()
 	prao = PreAlu()
-	prmo = PreAlu()
+	prmo = PreMem()
 	wbob = WriteBack(regob, pmo, pao)
 	regob.printRegFile()
 
@@ -117,6 +117,7 @@ def main():
 	prao.printBuff()
 	print "\nEmpty"
 	suc = prao.emptyBuff()
+	print "Success:", str(suc)
 	prao.printBuff()
 	print '\nFeed 156'
 	suc = prao.feedBuff(156)
@@ -126,6 +127,56 @@ def main():
 	suc = prao.feedBuff(96)
 	print "Success:", str(suc)
 	prao.printBuff()
+
+	print '\n>>> PHASE 2: Test passing PC values to Pre-MEM buffer, and simul-\n' \
+			+ '-taneously update OLDEST truth value.'
+
+	suc = False
+	prmo.printBuff()
+	print '\nFeed 96'
+	suc = prmo.feedBuff(96)
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print '\nFeed 100'
+	suc = prmo.feedBuff(100)
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print '\nFeed 104'
+	suc = prmo.feedBuff(104)
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print "\nEmpty"
+	suc = prmo.emptyBuff()
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print "\nEmpty"
+	suc = prmo.emptyBuff()
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print "\nEmpty"
+	suc = prmo.emptyBuff()
+	print "Success:", str(suc)
+	prmo.printBuff()	
+	print "\nEmpty"
+	suc = prmo.emptyBuff()
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print '\nFeed 104'
+	suc = prmo.feedBuff(104)
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print "\nEmpty"
+	suc = prmo.emptyBuff()
+	prmo.printBuff()
+	print '\nFeed 156'
+	suc = prmo.feedBuff(156)
+	print "Success:", str(suc)
+	prmo.printBuff()
+	print '\nFeed 96'
+	suc = prmo.feedBuff(96)
+	print "Success:", str(suc)
+	prmo.printBuff()
+
 
 
 if __name__== "__main__":

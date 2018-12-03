@@ -11,8 +11,8 @@
 #	Armed with the static PC, PreALU can reference BinData for all the data it needs
 #	based on a single index.
 #	
-#	When the buffer is fed, it is given a PC its FI (first in/oldest) changed to 0.
-#	When a buffer is emptied (one entry at a time), its PC is changed to None.
+#	When the aluBuffer is fed, it is given a PC its FI (first in/oldest) changed to 0.
+#	When a aluBuffer is emptied (one entry at a time), its PC is changed to None.
 #									
 #										FI		PC	
 #									-----------------
@@ -23,14 +23,14 @@
 #====================================================================================
 class PreAlu(object):
 	def __init__(self):
-		self.buff = [[None, None], [None, None]]
+		self.aluBuff = [[None, None], [None, None]]
 
 	def printBuff(self):
-		print '\nPRE-ALU BUFFER'
-		print 'Entry 1:  ' + '[OLDEST - ' + str(self.buff[0][0]) + ' | PC - ' \
-			+ str(self.buff[0][1]) + ']'
-		print 'Entry 2:  ' + '[OLDEST - ' + str(self.buff[1][0]) + ' | PC - ' \
-			+ str(self.buff[1][1]) + ']'	
+		print '\nPRE-ALU aluBuffER'
+		print 'Entry 1:  ' + '[OLDEST - ' + str(self.aluBuff[0][0]) + ' | PC - ' \
+			+ str(self.aluBuff[0][1]) + ']'
+		print 'Entry 2:  ' + '[OLDEST - ' + str(self.aluBuff[1][0]) + ' | PC - ' \
+			+ str(self.aluBuff[1][1]) + ']'	
 
 	# If both entries are empty, empty neither, feed 1st.
 	# If ONE entry is empty, feed the empty, dump the full.
@@ -39,59 +39,59 @@ class PreAlu(object):
 	def emptyBuff(self):
 		retVal = -1
 		# Test if BOTH entries are full (defer to oldest).
-		if (self.buff[0][1] != None) and (self.buff[1][1] != None):
-			if self.buff[0][0] == True:		# If first entry is oldest.
-				retVal = self.buff[0][1]	# Grab the PC index.
-				self.buff[0][1] = None		# Empty the entry.
-				self.buff[1][0] = True		# Now other non-empty entry is oldest.
-				self.buff[0][0] = False 	# And empty list is "young."
+		if (self.aluBuff[0][1] != None) and (self.aluBuff[1][1] != None):
+			if self.aluBuff[0][0] == True:		# If first entry is oldest.
+				retVal = self.aluBuff[0][1]		# Grab the PC index.
+				self.aluBuff[0][1] = None		# Empty the entry.
+				self.aluBuff[1][0] = True		# Now other non-empty entry is oldest.
+				self.aluBuff[0][0] = False 		# And empty list is "young."
 				return retVal
 			else:
-				retVal = self.buff[1][1]	# Grab the PC index.
-				self.buff[1][1] = None		# Empty the entry.
-				self.buff[1][0] = False		# Now other non-empty entry is oldest.
-				self.buff[0][0] = True 		# And empty list is "young."		
+				retVal = self.aluBuff[1][1]	# Grab the PC index.
+				self.aluBuff[1][1] = None		# Empty the entry.
+				self.aluBuff[1][0] = False		# Now other non-empty entry is oldest.
+				self.aluBuff[0][0] = True 		# And empty list is "young."		
 				return retVal
 		# Test if BOTH entries are empty.  Return -1.
-		if (self.buff[0][1] == None) and (self.buff[1][1] == None):
-			return -1
+		if (self.aluBuff[0][1] == None) and (self.aluBuff[1][1] == None):
+			return False
 		# At this point one entry is empty, one is not.
-		if (self.buff[0][1] != None):
-			retVal = self.buff[0][1]	# Grab the PC index.
-			self.buff[0][1] = None		# Empty the entry.
-			self.buff[1][0] = True		# Now other non-empty entry is oldest.
-			self.buff[0][0] = False 	# And empty list is "young."
+		if (self.aluBuff[0][1] != None):
+			retVal = self.aluBuff[0][1]		# Grab the PC index.
+			self.aluBuff[0][1] = None		# Empty the entry.
+			self.aluBuff[1][0] = True		# Now other non-empty entry is oldest.
+			self.aluBuff[0][0] = False 		s# And empty list is "young."
 			return retVal
 		else:
-			retVal = self.buff[1][1]	# Grab the PC index.
-			self.buff[1][1] = None		# Empty the entry.
-			self.buff[1][0] = False		# Now other non-empty entry is oldest.
-			self.buff[0][0] = True 		# And empty list is "young."		
+			retVal = self.aluBuff[1][1]	# Grab the PC index.
+			self.aluBuff[1][1] = None		# Empty the entry.
+			self.aluBuff[1][0] = False		# Now other non-empty entry is oldest.
+			self.aluBuff[0][0] = True 		# And empty list is "young."		
 			return retVal		
 
 	def feedBuff(self, pc):
 		# Test if BOTH entries are empty.
-		if (self.buff[0][1] == None) and (self.buff[1][1] == None):
-			self.buff[0][1] = pc 		# Dump in first entry.
-			self.buff[0][0] = True		# This entry is oldest.
-			self.buff[1][0] = False 	# Being paranoid.
+		if (self.aluBuff[0][1] == None) and (self.aluBuff[1][1] == None):
+			self.aluBuff[0][1] = pc 		# Dump in first entry.
+			self.aluBuff[0][0] = True		# This entry is oldest.
+			self.aluBuff[1][0] = False 	# Being paranoid.
 			return True
 		# Test if BOTH entries are full.
-		if (self.buff[0][1] != None) and (self.buff[1][1] != None):
-			return -1
+		if (self.aluBuff[0][1] != None) and (self.aluBuff[1][1] != None):
+			return False
 		# Test if FIRST entry is empty
-		if (self.buff[0][1] == None):
-			self.buff[0][1] = pc 		# Fill entry with PC index.
-			self.buff[0][0] = False		# Set entry FI/oldest to false. (Its now youngest.)
-			self.buff[1][0] = True		# Set OTHER entry to oldest.  (It doesn't matter if
+		if (self.aluBuff[0][1] == None):
+			self.aluBuff[0][1] = pc 		# Fill entry with PC index.
+			self.aluBuff[0][0] = False		# Set entry FI/oldest to false. (Its now youngest.)
+			self.aluBuff[1][0] = True		# Set OTHER entry to oldest.  (It doesn't matter if
 			return True					# the other entry is empty.)
 		# Test if SECOND entry is empty
-		if (self.buff[1][1] == None):
-			self.buff[1][1] = pc 
-			self.buff[1][0] = True
-			self.buff[0][0] = False
+		if (self.aluBuff[1][1] == None):
+			self.aluBuff[1][1] = pc 
+			self.aluBuff[1][0] = True
+			self.aluBuff[0][0] = False
 			return True
-		return False						# Failure to feed buffer.
+		return False						# Failure to feed aluBuffer.
 
 
 
