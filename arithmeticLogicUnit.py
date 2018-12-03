@@ -35,7 +35,7 @@ class ArithmeticLogicUnit(object):
 		elif opCodeStr == 'NOP':
 			self.doNOP(firstReg, secondReg)
 		else:
-			print "error in ArithmeticLogicUnit"
+			print("error in ArithmeticLogicUnit")
 	def compute_movk(self, opCodeStr, firstReg, imm, shift):
 		if opCodeStr == 'MOVK':
 			self.doMOVK(firstReg, imm, shift)
@@ -116,7 +116,11 @@ class ArithmeticLogicUnit(object):
 			data = data & BIT_MASK_2
 		else:
 			data = data & BIT_MASK_3
-		data = data + (imm * (2 ** shift))
+		# TESTPRINT
+		# print("data: " + str(data))
+		# print("imm: " + str(imm))
+		# print("shift: " + str(shift))
+		self.output = data + (imm * (2 ** shift))
 
 	###############################################################################
 	###############################################################################
@@ -124,8 +128,8 @@ class ArithmeticLogicUnit(object):
 
 	###############################################################################
 	###############################################################################
-	#def doNOP(self, nc, x):
-
+	def doNOP(self, nc, x):
+		self.output = ''
 	###############################################################################
 	###############################################################################
 	#def doB(self, nc, x):
