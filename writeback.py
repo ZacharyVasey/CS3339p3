@@ -1,4 +1,5 @@
 from reg import RegFile
+from postmem import PostMEM
 
 class WriteBack(object):
 	def __init__(self, regob):
@@ -14,7 +15,8 @@ class WriteBack(object):
 		print 'WB control on.'		# TESTPRINT
 		self.cont = True;
 
-	def writeRegFile(self, regID, regVal, regID2 = None, regVal2 = None):
+
+	def wbTest(self, regID, regVal, regID2 = None, regVal2 = None):
 		# print "\ncurrent cont:" + str(self.cont)
 
 		if (self.cont):		# If control signal on, proceed to write.
