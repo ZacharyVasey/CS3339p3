@@ -8,9 +8,10 @@
 class ArithmeticLogicUnit(object):
 	def __init__(self):
 		self.output = 0
+		self.regIndex = 0
 	def compute(self, opCodeStr, firstReg, secondReg):
 		if opCodeStr == 'ADD':
-			object.doADD(firstReg, secondReg)
+			self.doADD(firstReg, secondReg)
 		elif opCodeStr == 'SUB':
 			self.doSUB(firstReg, secondReg)
 		elif opCodeStr == 'LSL':
@@ -29,18 +30,21 @@ class ArithmeticLogicUnit(object):
 			self.doADDI(firstReg, secondReg)
 		elif opCodeStr == 'SUBI':
 			self.doSUBI(firstReg, secondReg)
-		elif opCodeStr == 'MOVK':
-			self.doMOVK(firstReg, secondReg)
 		elif opCodeStr == 'MOVZ':
 			self.doMOVZ(firstReg, secondReg)
 		elif opCodeStr == 'NOP':
 			self.doNOP(firstReg, secondReg)
-		elif opCodeStr == 'BREAK':
-			self.doBREAK(firstReg, secondReg)
 		else:
 			print "error in ArithmeticLogicUnit"
+	def compute_movk(self, opCodeStr, firstReg, imm, shift):
+		if opCodeStr == 'MOVK':
+			self.doMOVK(firstReg, imm, shift)
 	def getOutput(self):
 		return self.output
+	def setRegIndex(self, regIndex):
+		self.regIndex = regIndex
+	def getRegIndex(self):
+		return self.regIndex
 	###############################################################################
 	###############################################################################
 	def doADD(self, data1, data2):
