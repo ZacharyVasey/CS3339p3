@@ -1,14 +1,17 @@
-#========================================================================
-# Class PostALU()
-# Post ALU register.
-# The post-ALU buffer has one entry that can store the instruction with the destination register ID and the result of the ALU operation
-#========================================================================
+#====================================================================================
+# Class PostALU
+# 	Post ALU register. The post-ALU buffer has one entry that can store the 
+# 	instruction with the destination register ID and the result of the ALU operation
+#====================================================================================
 class PostALU(object):
+    
     def __init__(self):
-        self.content = ''     #contents of the post ALU
+        self.regInd = None 
+        self.regVal = None
+  	
+  	def setContent(ri, rv):
+  		self.regInd = ri
+  		self.regVal = rv
 
-    def getContent(self):
-        return self.content
-
-    def setContent(self, new_content):
-        self.content = new_content
+  	def printContent:
+  		print 'PostALU:\n' + 'regInd: ' + str(self.regIndex) + '\nregVal:' + str(self.regVal)
