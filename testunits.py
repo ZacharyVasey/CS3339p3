@@ -3,6 +3,7 @@ from postmem import PostMem
 from postalu import PostAlu
 from prealu import PreAlu
 from premem import PreMem
+from preiss import PreIss
 from writeback import WriteBack
 
 def main():
@@ -11,6 +12,7 @@ def main():
 	pao = PostAlu()
 	prao = PreAlu()
 	prmo = PreMem()
+	prio = PreIss()
 	wbob = WriteBack(regob, pmo, pao)
 	regob.printRegFile()
 
@@ -80,102 +82,250 @@ def main():
 	print '//=================================================================='
 	print '>>> PHASE 1: Test passing PC values to Pre-ALU buffer, and simul-\n' \
 			+ '-taneously update OLDEST truth value.'
+	print 'The buffer is fed the address of an instruction in memory - '
+	print 'aka the bindata index.'			
+	print '\t Feed: [bindata index]'
 
 	suc = False
 	prao.printBuff()
+	
 	print '\nFeed 96'
 	suc = prao.feedBuff(96)
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print '\nFeed 100'
 	suc = prao.feedBuff(100)
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print '\nFeed 104'
 	suc = prao.feedBuff(104)
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print "\nEmpty"
 	suc = prao.emptyBuff()
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print "\nEmpty"
 	suc = prao.emptyBuff()
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print "\nEmpty"
 	suc = prao.emptyBuff()
 	print "Success:", str(suc)
 	prao.printBuff()	
+	
 	print "\nEmpty"
 	suc = prao.emptyBuff()
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print '\nFeed 104'
 	suc = prao.feedBuff(104)
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print "\nEmpty"
 	suc = prao.emptyBuff()
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print '\nFeed 156'
 	suc = prao.feedBuff(156)
 	print "Success:", str(suc)
 	prao.printBuff()
+	
 	print '\nFeed 96'
 	suc = prao.feedBuff(96)
 	print "Success:", str(suc)
 	prao.printBuff()
 
-	print '\n>>> PHASE 2: Test passing PC values to Pre-MEM buffer, and simul-\n' \
-			+ '-taneously update OLDEST truth value.'
+	print '\n>>> PHASE 2: Test passing PC values to Pre-MEM buffer, and simultaneously\n'\
+		'update OLDEST truth value.  The buffer is fed the address \nof '\
+		'an instruction in memory - aka the bindata index.'
 
 	suc = False
 	prmo.printBuff()
+	
 	print '\nFeed 96'
 	suc = prmo.feedBuff(96)
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print '\nFeed 100'
 	suc = prmo.feedBuff(100)
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print '\nFeed 104'
 	suc = prmo.feedBuff(104)
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print "\nEmpty"
 	suc = prmo.emptyBuff()
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print "\nEmpty"
 	suc = prmo.emptyBuff()
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print "\nEmpty"
 	suc = prmo.emptyBuff()
 	print "Success:", str(suc)
 	prmo.printBuff()	
+	
 	print "\nEmpty"
 	suc = prmo.emptyBuff()
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print '\nFeed 104'
 	suc = prmo.feedBuff(104)
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print "\nEmpty"
 	suc = prmo.emptyBuff()
+	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print '\nFeed 156'
 	suc = prmo.feedBuff(156)
 	print "Success:", str(suc)
 	prmo.printBuff()
+	
 	print '\nFeed 96'
 	suc = prmo.feedBuff(96)
 	print "Success:", str(suc)
 	prmo.printBuff()
+
+	print '\n//=================================================================='
+	print '//	MODULE TEST - PRE-ISSUE'
+	print '//=================================================================='
+	print '>>> PHASE 1: Test feeding, emptying, and sorting Pre-Issue Buffer.'
+	print 'The buffer is fed the address of an instruction in memory - '
+	print 'aka the bindata index.'
+	print '\tFeed: [bindata index] or [bindata index, bindata index]'
+	print '\tEmpty: [pre-issue buffer index, bindata index]'
+	count = 0
+	suc = False
+	prio.printBuff()
+
+	count = prio.countEmpties()
+	print 'Feed: 96'
+	print 'Empties:', count
+	suc = prio.feedBuff(96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	count = prio.countEmpties()
+	print 'Feed: 100, 104'
+	print 'Empties:', count
+	suc = prio.feedBuff(100, 104)
+	print 'Success:', suc
+	prio.printBuff()	
+
+	count = prio.countEmpties()
+	print 'Feed: 108, 112'
+	print 'Empties:', count
+	suc = prio.feedBuff(108, 112)
+	print 'Success:', suc
+	prio.printBuff()	
+
+	count = prio.countEmpties()
+	print 'Feed: 108'
+	print 'Empties:', count
+	suc = prio.feedBuff(96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	count = prio.countEmpties()
+	print 'Feed: 96'
+	print 'Empties:', count
+	suc = prio.feedBuff(96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	print 'Sort buffer'
+	prio.sortBuff()
+	prio.printBuff()
+
+	print 'Empty: 1, 96'
+	suc = prio.emptyBuff(1, 96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	print 'Empty: 1, 96'
+	suc = prio.emptyBuff(1, 96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	print 'Empty: 0, 104'
+	suc = prio.emptyBuff(0, 104)
+	print 'Success:', suc
+	prio.printBuff()
+
+	# print 'Empty buffer: 5, 100'
+	# print 'Empties:', count
+	# suc = prio.emptyBuff(5, 100)
+	# print 'Success:', suc
+	# prio.printBuff()
+
+	print 'Empty: 2, 100'
+	suc = prio.emptyBuff(2, 100)
+	print 'Success:', suc
+	prio.printBuff()
+
+	count = prio.countEmpties()
+	print 'Feed: 108, 112'
+	print 'Empties:', count
+	suc = prio.feedBuff(108, 112)
+	print 'Success:', suc
+	prio.printBuff()	
+
+	print 'Sort'
+	prio.sortBuff()
+	prio.printBuff()
+
+	print 'Empty: 1, 96'
+	suc = prio.emptyBuff(1, 96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	print 'Empty: 0, 96'
+	suc = prio.emptyBuff(0, 96)
+	print 'Success:', suc
+	prio.printBuff()
+
+	count = prio.countEmpties()
+	print 'Feed: 116, 120'
+	print 'Empties:', count
+	suc = prio.feedBuff(116, 120)
+	print 'Success:', suc
+	prio.printBuff()	
+
+	print 'Empty: 1, 104'
+	suc = prio.emptyBuff(1, 104)
+	print 'Success:', suc
+	prio.printBuff()
+
+	print 'Empty: 3, 112'
+	suc = prio.emptyBuff(3, 112)
+	print 'Success:', suc
+	prio.printBuff()
+
+	print 'Empty: 2, 108'
+	suc = prio.emptyBuff(2, 108)
+	print 'Success:', suc
+	prio.printBuff()
+
 
 
 

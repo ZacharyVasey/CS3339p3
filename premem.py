@@ -1,12 +1,12 @@
 #====================================================================================
 # PreMem
 # 	Holds 2 entries.  FIFO.  1 - oldest. 0 - newest.
-#	Armed with the static PC, PreMem can reference BinData for all the data it needs
+#	Armed with the static BDX, PreMem can reference BinData for all the data it needs
 #	based on a single index.	
-#	When the memBuffer is fed, it is given a PC its FI (first in/oldest) changed to 0.
-#	When a memBuffer is emptied (one entry at a time), its PC is changed to None.
+#	When the memBuffer is fed, it is given a BDX its FI (first in/oldest) changed to 0.
+#	When a memBuffer is emptied (one entry at a time), its BDX is changed to None.
 #									
-#										FI		PC	
+#										FI		BDX	
 #									-----------------
 #								0	| False	|	96	|
 #									-----------------
@@ -19,9 +19,9 @@ class PreMem(object):
 
 	def printBuff(self):
 		print '\nPRE-MEM memBuffER'
-		print 'Entry 1:  ' + '[OLDEST - ' + str(self.memBuff[0][0]) + ' | PC - ' \
+		print 'Entry 1:  ' + '[OLDEST - ' + str(self.memBuff[0][0]) + ' | BDX - ' \
 			+ str(self.memBuff[0][1]) + ']'
-		print 'Entry 2:  ' + '[OLDEST - ' + str(self.memBuff[1][0]) + ' | PC - ' \
+		print 'Entry 2:  ' + '[OLDEST - ' + str(self.memBuff[1][0]) + ' | BDX - ' \
 			+ str(self.memBuff[1][1]) + ']'	
 
 	# If both entries are empty, empty neither, feed 1st.

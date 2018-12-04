@@ -5,16 +5,16 @@
 #		Take it straight from BinData object.
 #		There we have a matrix of information: columns of data, rows of instructions.
 #		How do we know which row to access?  
-#			The PC.  
-#				We must NOT reach out to PC unit FROM PreAlu to get the row.
-#				We must pass a STATIC PC value TO the PreALU.
-#	Armed with the static PC, PreALU can reference BinData for all the data it needs
+#			The BDX.  
+#				We must NOT reach out to BDX unit FROM PreAlu to get the row.
+#				We must pass a STATIC BDX value TO the PreALU.
+#	Armed with the static BDX, PreALU can reference BinData for all the data it needs
 #	based on a single index.
 #	
-#	When the aluBuffer is fed, it is given a PC its FI (first in/oldest) changed to 0.
-#	When a aluBuffer is emptied (one entry at a time), its PC is changed to None.
+#	When the aluBuffer is fed, it is given a BDX its FI (first in/oldest) changed to 0.
+#	When a aluBuffer is emptied (one entry at a time), its BDX is changed to None.
 #									
-#										FI		PC	
+#										FI		BDX	
 #									-----------------
 #								0	| False	|	96	|
 #									-----------------
@@ -27,9 +27,9 @@ class PreAlu(object):
 
 	def printBuff(self):
 		print '\nPRE-ALU aluBuffER'
-		print 'Entry 1:  ' + '[OLDEST - ' + str(self.aluBuff[0][0]) + ' | PC - ' \
+		print 'Entry 1:  ' + '[OLDEST - ' + str(self.aluBuff[0][0]) + ' | BDX - ' \
 			+ str(self.aluBuff[0][1]) + ']'
-		print 'Entry 2:  ' + '[OLDEST - ' + str(self.aluBuff[1][0]) + ' | PC - ' \
+		print 'Entry 2:  ' + '[OLDEST - ' + str(self.aluBuff[1][0]) + ' | BDX - ' \
 			+ str(self.aluBuff[1][1]) + ']'	
 
 	# If both entries are empty, empty neither, feed 1st.
@@ -41,13 +41,13 @@ class PreAlu(object):
 		# Test if BOTH entries are full (defer to oldest).
 		if (self.aluBuff[0][1] != None) and (self.aluBuff[1][1] != None):
 			if self.aluBuff[0][0] == True:		# If first entry is oldest.
-				retVal = self.aluBuff[0][1]		# Grab the PC index.
+				retVal = self.aluBuff[0][1]		# Grab the BDX.
 				self.aluBuff[0][1] = None		# Empty the entry.
 				self.aluBuff[1][0] = True		# Now other non-empty entry is oldest.
 				self.aluBuff[0][0] = False 		# And empty list is "young."
 				return retVal
 			else:
-				retVal = self.aluBuff[1][1]	# Grab the PC index.
+				retVal = self.aluBuff[1][1]		# Grab the BDX.
 				self.aluBuff[1][1] = None		# Empty the entry.
 				self.aluBuff[1][0] = False		# Now other non-empty entry is oldest.
 				self.aluBuff[0][0] = True 		# And empty list is "young."		
@@ -57,13 +57,13 @@ class PreAlu(object):
 			return False
 		# At this point one entry is empty, one is not.
 		if (self.aluBuff[0][1] != None):
-			retVal = self.aluBuff[0][1]		# Grab the PC index.
+			retVal = self.aluBuff[0][1]		# Grab the BDX.
 			self.aluBuff[0][1] = None		# Empty the entry.
 			self.aluBuff[1][0] = True		# Now other non-empty entry is oldest.
-			self.aluBuff[0][0] = False 		s# And empty list is "young."
+			self.aluBuff[0][0] = False 		# And empty list is "young."
 			return retVal
 		else:
-			retVal = self.aluBuff[1][1]	# Grab the PC index.
+			retVal = self.aluBuff[1][1]		# Grab the BDX.
 			self.aluBuff[1][1] = None		# Empty the entry.
 			self.aluBuff[1][0] = False		# Now other non-empty entry is oldest.
 			self.aluBuff[0][0] = True 		# And empty list is "young."		
@@ -81,10 +81,10 @@ class PreAlu(object):
 			return False
 		# Test if FIRST entry is empty
 		if (self.aluBuff[0][1] == None):
-			self.aluBuff[0][1] = pc 		# Fill entry with PC index.
+			self.aluBuff[0][1] = pc 		# Fill entry with BDX.
 			self.aluBuff[0][0] = False		# Set entry FI/oldest to false. (Its now youngest.)
 			self.aluBuff[1][0] = True		# Set OTHER entry to oldest.  (It doesn't matter if
-			return True					# the other entry is empty.)
+			return True						# the other entry is empty.)
 		# Test if SECOND entry is empty
 		if (self.aluBuff[1][1] == None):
 			self.aluBuff[1][1] = pc 
