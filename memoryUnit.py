@@ -19,10 +19,10 @@
 #	A RAW hazard.
 ##################################
 class Cache(object):
-	def __init__(self):
-		self.valid = [False] * 100
-		self.dirty = [False] * 100
-		self.data = [''] * 100
+	def __init__(self, size):
+		self.valid = [False] * size
+		self.dirty = [False] * size
+		self.data = [''] * size
 	def check(self, address):
 		if(address >= len(self.valid)):
 			return False
@@ -48,6 +48,7 @@ class MemoryUnit(object):
 		return self.content
 	def getIndex(self):
 		return self.index
+		
 	def accessMemory(self, opCodeString, address, offset):
 		if(opCodeString == "LDUR"):
 			if(self.cache.check(address + offset)):

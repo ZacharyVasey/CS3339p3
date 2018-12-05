@@ -8,17 +8,21 @@ def main():
 	premem = [66, 2, 85, '', '', 1, '']
 	postmem = ['', '', '', '', '', '', '']
 	
-	cache = Cache()
+	cache = Cache(10)
 	mem = MemoryUnit(cache)
 	
 	index = 0
 	
 	while(index < 6):
+		print "\n\n"
+		print("Load in from premem: " + str(premem[index]))
 		mem.setContent(premem[index])
+		print(opCodeString[index] + ", address: " + str(address[index]) + ", offset: " + str(offset[index]))
 		mem.accessMemory(opCodeString[index], address[index], offset[index])
+		print("result: " + str(mem.getContent()))
 		postmem[index] = mem.getContent()
+		print("Cache: " + str(cache.data))
 		index = index + 1
-	print postmem
 	
 if __name__== "__main__":
 	main()
