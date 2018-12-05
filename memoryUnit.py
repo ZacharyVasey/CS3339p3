@@ -18,14 +18,44 @@
 #	This may cause a stall since you are checking to see that all instructions in flight that might access the memory location have to wait.
 #	A RAW hazard.
 ##################################
-
+class Cache(object):
+	def __init__(self):
+		self.valid = [False] * 100
+		self.dirty = [False] * 100
+		self.data = [''] * 100
+	def check(self, address):
+		if(address >= len(self.valid)):
+			return False
+		else:
+			return self.valid[address]
+	def read(self, address):
+		return self.data[address]
+	def write(self, address, content):
+		self.valid[address] = True
+		self.data[address] = content
+	
 class MemoryUnit(object):
-    def __init__(self, cache):
-        self.cache = cache
-		self.content = 0
-	def checkCache(self):
-		pass
-	def getContent(self):
-		return self.content
+	def __init__(self, cache):
+		self.cache = cache
+		self.content = None
+		self.regIndex = None
+
 	def setContent(self, content):
 		self.content = content
+	def setIndex(self, index):
+		self.index = index
+	def getContent(self):
+		return self.content
+	def getIndex(self):
+		return self.index
+	def accessMemory(self, opCodeString, address, offset):
+		if(opCodeString == "LDUR"):
+			if(self.cache.check(address + offset)):
+				self.content = self.cache.read(address + offset)
+			else:
+				print "Data needs to be fetched from memory."
+		elif(opCodeString == "STUR"):
+			self.cache.write(address + offset, self.content)
+			self.content = None
+		else:
+			print "error in accessMemory() --> Invalid opCodeString"
