@@ -325,8 +325,11 @@ def main():
 	suc = prio.emptyBuff(2, 108)
 	print 'Success:', suc
 	prio.printBuff()
-
-
+	
+	print '//=================================================================='
+	print '//	MODULE TEST - CACHE'
+	print '//=================================================================='
+	print '>>> PHASE 1: write directly to register file.\n'
 
 
 if __name__== "__main__":

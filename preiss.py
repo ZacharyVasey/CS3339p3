@@ -17,9 +17,6 @@
 #	Holds 4 entries.  NOT FIFO.  Program order, so there is no need to monitor
 # 	first in.  We pass binData indices, which are already - by their nature -  are 
 #	already in program order.
-#									
-#	 
-#	
 #====================================================================================
 class PreIss(object):
 	
