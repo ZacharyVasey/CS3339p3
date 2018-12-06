@@ -5,11 +5,11 @@
 #========================================================================
 from cache import Cache
 from insf import IF
-from prealu import PreALU
-from postalu import PostALU
-from premem import PreMEM
-from postmem import PostMEM
-from preIssueBuffer import PreIssueBuffer
+from prealu import PreAlu
+from postalu import PostAlu
+from premem import PreMem
+from postmem import PostMem
+from preiss import PreIss
 from arithmeticLogicUnit import ArithmeticLogicUnit
 
 class PL(object):
@@ -20,39 +20,39 @@ class PL(object):
 		print("\n\n======================================================================")
 		print('\nWELCOME TO THE PIPELINE')
 		
-		# TESTPRINT cache
-		ch = Cache()
-		ch.testPrint()
+		# # TESTPRINT cache
+		# ch = Cache()
+		# ch.printCache()
 		
-		# Initialized single, shared PC.
-		pc = 96
+		# # Initialized single, shared PC.
+		# pc = 96
 		
-		# Create IF object and pass starting address.  Run IF/ID phase.
-		ifo = IF(self.binData)
-		ifo.run()
+		# # Create IF object and pass starting address.  Run IF/ID phase.
+		# ifo = IF(self.binData)
+		# ifo.run()
 
-		# Create Pre Issue Buffer
-		pib = PreIssueBuffer()
+		# # Create Pre Issue Buffer
+		# pib = PreIssueBuffer()
 
-		# Create Pre MEM unit
-		preMEM = PreMEM()
+		# # Create Pre MEM unit
+		# preMEM = PreMEM()
 		
-		# Create Pre MEM unit
-		preALU = PreALU()
+		# # Create Pre MEM unit
+		# preALU = PreALU()
 		
-		#Create ALU
-		ALU = ArithmeticLogicUnit()
+		# #Create ALU
+		# ALU = ArithmeticLogicUnit()
 		
-		# Create post MEM unit
-		postMEM = PostMEM()
+		# # Create post MEM unit
+		# postMEM = PostMEM()
 
-		# Create post ALU unit
-		postALU = PostALU()
+		# # Create post ALU unit
+		# postALU = PostALU()
 		
-		#ALU Compute
-		ALU.compute(opCodeStr, Reg1, Reg2)
+		# #ALU Compute
+		# ALU.compute(opCodeStr, Reg1, Reg2)
 		
-		#assign output to post ALU
-		postALU.setContent(ALU.getOutput())
+		# #assign output to post ALU
+		# postALU.setContent(ALU.getOutput())
 		
 		print('\n======================================================================\n\n')

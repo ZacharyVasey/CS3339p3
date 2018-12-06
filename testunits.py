@@ -396,97 +396,12 @@ def main():
 	setIndex = cbo.getSetIndex(140)
 	print "Result:", str(setIndex)
 
-	print '\n>>> PHASE 2: Test hits and misses with fabricated cache data 1 - 16.'
+	print '\n>>> PHASE 2: Test hitting (or missing) memory addresses in fabricated cache.'\
+		'\nThis does NOT test data at the provided address, nor updating via memory at the'\
+		'\nprovided address.  This simply tests if the provided address EXISTS in cache or not.'
 
-	#			   [V, D, T, W, W, LRU]
-	pc = 96
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [1, 0, tag, 1, 2, 0]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block
-
-	pc += 8	
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [1, 0, tag, 3, 4, 0]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-
-	pc += 8	
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [0, 0, tag, 5, 6, 1]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-
-	pc += 8
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [0, 0, tag, 7, 8, 1]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-
-	pc = 192
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [1, 0, tag, 9, 10, 1]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-	
-	pc += 8
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [0, 0, tag, 11, 12, 1]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-
-	pc += 8
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [0, 0, tag, 13, 14, 0]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-
-	pc += 8
-	tag = cbo.getTag(pc)
-	si = cbo.getSetIndex(pc)
-	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [1, 0, tag, 15, 16, 0]
-	# print "\nPC :", pc
-	# print "Tag:", tag 
-	# print "SI ", si
-	# print "BO :", bo
-	# print "block: ", block	
-
+	print '\nFABRICATED CACHE:'
+	cbo.fabTestCache()
 	cbo.printCache()
 
 	hit = [None, None, None]
@@ -570,7 +485,10 @@ def main():
 		truth = True
 	print "Result:", truth
 
-	print '\n>>> PHASE 3: Test grabbing data from cache.'
+	print '\n>>> PHASE 3: Test fetching data from cache.'
+	print 'Unlike phase 2, this test will update the memory based on a test file,'\
+		'\ntestCache.txt, which is simply numbers 1 - 16, starting at memory'\
+		'\naddress 96.'
 
 	cbo.printCache()
 
@@ -623,6 +541,7 @@ def main():
 	print "Result:", data
 
 	print '\n>>> PHASE 4: Test updating cache.'
+
 
 
 

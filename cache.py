@@ -66,10 +66,109 @@ class Cache(object):
 		else:
 			return None
 
-	def write(self, mAddr, data):
-		# If dirty bit off, simply write over the existing cache data.
-		hit = self.isHit(mAddr)
-		if hit[0] != None:
-			pass
+	def hasEmptyBlock(self, pc):
+		setIndex = getSetIndex(pc)
+		for row in self.ch[setIndex]:
+			if row[0] == 0:
+				return True
+		return False
 
-		# If dirty bit on, return the data that WAS held there to memory.
+	def clearCache(self):
+		bl = [0, 0, 0, 0, 0, 0]
+		st = []
+		for x in range(0, 4):
+			for y in range(0, 2):
+				st = copy.deepcopy([])
+				st.append(copy.deepcopy(bl))
+				st.append(copy.deepcopy(bl))
+			self.ch.append(copy.deepcopy(st))
+
+	def fabTestCache(self):
+		#			   [V, D, T, W, W, LRU]
+		pc = 96
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][0] = [1, 0, tag, 101, 102, 0]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block
+
+		pc += 8	
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][0] = [1, 0, tag, 103, 104, 0]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
+
+		pc += 8	
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][0] = [0, 0, tag, 105, 106, 1]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
+
+		pc += 8
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][0] = [0, 0, tag, 107, 108, 1]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
+
+		pc = 192
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][1] = [1, 0, tag, 109, 110, 1]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
+		
+		pc += 8
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][1] = [0, 0, tag, 111, 112, 1]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
+
+		pc += 8
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][1] = [0, 0, tag, 113, 114, 0]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
+
+		pc += 8
+		tag = self.getTag(pc)
+		si = self.getSetIndex(pc)
+		bo = self.getBlockOffset(pc)
+		block = self.ch[si][1] = [1, 0, tag, 115, 116, 0]
+		# print "\nPC :", pc
+		# print "Tag:", tag 
+		# print "SI ", si
+		# print "BO :", bo
+		# print "block: ", block	
