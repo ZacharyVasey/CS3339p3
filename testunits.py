@@ -15,7 +15,7 @@ class TestUnits(object):
 		self.prao = PreAlu()
 		self.prmo = PreMem()
 		self.prio = PreIss()
-		self.cbo = Cache()
+		self.cbo = Cache(binDataOb)
 		self.wbob = WriteBack(self.regob, self.pmo, self.pao)
 		self.regob.printRegFile()
 		self.bdo = binDataOb
@@ -414,7 +414,7 @@ class TestUnits(object):
 
 		print "\nHIT - 96"
 		print "Expect: True"
-		hit = self.cbo.isHit(96)
+		hit = self.cbo.getCacheAddr(96)
 		if hit[0] == None:
 			truth = False
 		else:
@@ -423,7 +423,7 @@ class TestUnits(object):
 		
 		print "\nHIT - 100"
 		print "Expect: True"
-		hit = self.cbo.isHit(100)
+		hit = self.cbo.getCacheAddr(100)
 		if hit[0] == None:
 			truth = False
 		else:
@@ -432,7 +432,7 @@ class TestUnits(object):
 
 		print "\nHIT - 104"
 		print "Expect: True"
-		hit = self.cbo.isHit(104)
+		hit = self.cbo.getCacheAddr(104)
 		if hit[0] == None:
 			truth = False
 		else:
@@ -441,7 +441,7 @@ class TestUnits(object):
 
 		print "\nHIT - 108"
 		print "Expect: True"
-		hit = self.cbo.isHit(108)
+		hit = self.cbo.getCacheAddr(108)
 		if hit[0] == None:
 			truth = False
 		else:
@@ -450,7 +450,7 @@ class TestUnits(object):
 
 		print "\nHIT - 192"
 		print "Expect: True"
-		hit = self.cbo.isHit(192)
+		hit = self.cbo.getCacheAddr(192)
 		if hit[0] == None:
 			truth = False
 		else:
@@ -459,92 +459,70 @@ class TestUnits(object):
 
 		self.cbo.printCache()
 
-		print "\nHIT - 184"
-		print "Expect: False"
-		print "Why: not in cache"
-		hit = self.cbo.isHit(184)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		# print "\nHIT - 184"
+		# print "Expect: False"
+		# print "Why: not in cache"
+		# hit = self.cbo.getCacheAddr(184)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
 
-		print "\nHIT - 200"
-		print "Expect: False"
-		print "Why: valid bit 0"
-		hit = self.cbo.isHit(200)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		# self.cbo.printCache()
 
-		print "\nHIT - 120"
-		print "Expect: False"
-		print "Why: valid bit 0"
-		hit = self.cbo.isHit(120)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		# print "\nHIT - 200"
+		# print "Expect: False"
+		# print "Why: valid bit 0"
+		# hit = self.cbo.getCacheAddr(200)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
 
-		print '\n>>> PHASE 3: Test fetching data from cache.'
+		# self.cbo.printCache()
+
+		# print "\nHIT - 120"
+		# print "Expect: False"
+		# print "Why: valid bit 0"
+		# hit = self.cbo.getCacheAddr(120)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
+
+		print '\n>>> PHASE 3: Test fetching data from cache and updating LRU bit.'
 		print 'Unlike phase 2, this test will update the memory based on a test file,'\
 			'\ntestCache.txt, which is simply numbers 1 - 16, starting at memory'\
-			'\naddress 96.'
+			'\naddress 100.'
 
 		self.cbo.printCache()
 
-		data = None
-		print "\nDATA @ 96"
-		print "Expect: 1"
-		data = self.cbo.getData(96)
-		print "Result:", data
+		self.cbo.testDataFetch(96, 501)
+		self.cbo.testDataFetch(100, 502)
+		self.cbo.testDataFetch(96, 501, 100, 502)
+		self.cbo.testDataFetch(192, 509)
+		self.cbo.testDataFetch(216, 515)
 
-		print "\nDATA @ 100"
-		print "Expect: 2"
-		data = self.cbo.getData(100)
-		print "Result:", data
+		self.cbo.testDataFetch(200, 10)		# Previously 511 (word 0)
+		self.cbo.testDataFetch(212, 13)		# Previously 514 (word 1)
+		self.cbo.testDataFetch(120, 6, 124, 7)
 
-		print "\nDATA @ 104"
-		print "Expect: 3"
-		data = self.cbo.getData(104)
-		print "Result:", data
-
-		print "\nDATA @ 108"
-		print "Expect: 4"
-		data = self.cbo.getData(108)
-		print "Result:", data
-
-		print "\nDATA @ 192"
-		print "Expect: 9"
-		data = self.cbo.getData(192)
-		print "Result:", data
-
-		print "\nDATA @ 196"
-		print "Expect: 10"
-		data = self.cbo.getData(196)
-		print "Result:", data
-
+		print
+		self.cbo.clearCache()
 		self.cbo.printCache()
 
-		print "\nDATA @ 200"
-		print "Expect: None"
-		data = self.cbo.getData(200)
-		print "Result:", data
+		pc = 100
+		while pc < 224:
+			data = self.cbo.fetchData(pc)
+			print "\n>>> Data @ " + str(pc) + ": " + str(data)
+			pc += 4
+			self.cbo.printCache()
 
-		print "\nDATA @ 204"
-		print "Expect: None"
-		data = self.cbo.getData(204)
-		print "Result:", data
 
-		print "\nDATA @ 1024"
-		print "Expect: None"
-		data = self.cbo.getData(1024)
-		print "Result:", data
 
-		print '\n>>> PHASE 4: Test updating cache.'
 
 	if __name__== "__main__":
 		main()
