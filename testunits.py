@@ -398,12 +398,12 @@ def main():
 
 	print '\n>>> PHASE 2: Test hits and misses with fabricated cache data 1 - 16.'
 
-	#			   [V, D, T, W, W]
+	#			   [V, D, T, W, W, LRU]
 	pc = 96
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [1, 0, tag, 1, 2]
+	block = cbo.ch[si][0] = [1, 0, tag, 1, 2, 0]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -414,7 +414,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [1, 0, tag, 3, 4]
+	block = cbo.ch[si][0] = [1, 0, tag, 3, 4, 0]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -425,7 +425,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [0, 0, tag, 5, 6]
+	block = cbo.ch[si][0] = [0, 0, tag, 5, 6, 1]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -436,7 +436,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][0] = [0, 0, tag, 7, 8]
+	block = cbo.ch[si][0] = [0, 0, tag, 7, 8, 1]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -447,7 +447,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [1, 0, tag, 9, 10]
+	block = cbo.ch[si][1] = [1, 0, tag, 9, 10, 1]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -458,7 +458,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [0, 0, tag, 11, 12]
+	block = cbo.ch[si][1] = [0, 0, tag, 11, 12, 1]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -469,7 +469,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [0, 0, tag, 13, 14]
+	block = cbo.ch[si][1] = [0, 0, tag, 13, 14, 0]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -480,7 +480,7 @@ def main():
 	tag = cbo.getTag(pc)
 	si = cbo.getSetIndex(pc)
 	bo = cbo.getBlockOffset(pc)
-	block = cbo.ch[si][1] = [1, 0, tag, 15, 16]
+	block = cbo.ch[si][1] = [1, 0, tag, 15, 16, 0]
 	# print "\nPC :", pc
 	# print "Tag:", tag 
 	# print "SI ", si
@@ -489,7 +489,7 @@ def main():
 
 	cbo.printCache()
 
-	hit = [None, None, None,]
+	hit = [None, None, None]
 	truth = False
 	# Hit returns address: [setIndex, block, tag, blockOff]
 

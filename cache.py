@@ -9,7 +9,7 @@ class Cache(object):
 		self.start = 96
 		self.ch = []
 		# Initialize empty cache.  ch -> 4 sets -> 2 blocks
-		bl = [0, 0, 0, 0, 0]
+		bl = [0, 0, 0, 0, 0, 0]
 		st = []
 		for x in range(0, 4):
 			for y in range(0, 2):
@@ -19,7 +19,7 @@ class Cache(object):
 			self.ch.append(copy.deepcopy(st))
 
 	def printCache(self):
-		lines = "\nCACHE\t[V, D, T, W, W]"
+		lines = "\nCACHE\t[V, D, T, W, W, LRU]"
 		for num, set in enumerate(self.ch):
 			lines += '\nSet' + str(num) + '\t'
 			for block in set:
@@ -66,9 +66,10 @@ class Cache(object):
 		else:
 			return None
 
+	def write(self, mAddr, data):
+		# If dirty bit off, simply write over the existing cache data.
+		hit = self.isHit(mAddr)
+		if hit[0] != None:
+			pass
 
-
-
-
-				
-			
+		# If dirty bit on, return the data that WAS held there to memory.
