@@ -1163,6 +1163,11 @@ def main():
 	from pl import PL
 	pLine = PL(binData)
 	pLine.run()
+
+	from testunits import TestUnits 
+	tuo = TestUnits(binData)
+	tuo.run()
+
 		
 if __name__== "__main__":
 	main()
