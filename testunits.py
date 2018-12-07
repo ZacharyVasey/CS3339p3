@@ -335,129 +335,386 @@ class TestUnits(object):
 		print '//=================================================================='
 		print '//	MODULE TEST - CACHE'
 		print '//=================================================================='
-		print '>>> PHASE 1: test correct index paced on provided PC.'
+		print '>>> PHASE 1: test correct pc mapping of block offset, set index,'\
+			+ '\nand tag.'
+
+
+
 
 		self.cbo.printCache()
-		setIndex = 0
+		bloff = 0
+		pc = 96
 
-		print '\nGet set index for 96  ~  ' + str(bin(96))
-		print "Expect: 0"
-		setIndex = self.cbo.getSetIndex(96)
-		print "Result:", str(setIndex)
+		print '\nBlock offset:', pc
+		print 'Expect: 0' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
+		
+		pc += 4
+		print '\nBlock offset:', pc
+		print 'Expect: 1' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
 
-		print '\nGet set index for 100  ~  ' + str(bin(100))
-		print "Expect: 0"
-		setIndex = self.cbo.getSetIndex(100)
-		print "Result:", str(setIndex)
+		pc += 4
+		print '\nBlock offset:', pc
+		print 'Expect: 0' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
 
-		print '\nGet set index for 104  ~  ' + str(bin(104))
-		print "Expect: 1"
-		setIndex = self.cbo.getSetIndex(104)
-		print "Result:", str(setIndex)
+		pc += 4
+		print '\nBlock offset:', pc
+		print 'Expect: 1' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
 
-		print '\nGet set index for 108  ~  ' + str(bin(108))
-		print "Expect: 1"
-		setIndex = self.cbo.getSetIndex(108)
-		print "Result:", str(setIndex)
+		pc += 2
+		print '\nBlock offset:', pc
+		print 'Expect: -1' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
 
-		print '\nGet set index for 112  ~  ' + str(bin(112))
-		print "Expect: 2"
-		setIndex = self.cbo.getSetIndex(112)
-		print "Result:", str(setIndex)
 
-		print '\nGet set index for 116  ~  ' + str(bin(116))
-		print "Expect: 2"
-		setIndex = self.cbo.getSetIndex(116)
-		print "Result:", str(setIndex)
+		pc += 2
+		print '\nBlock offset:', pc
+		print 'Expect: 0' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
 
-		print '\nGet set index for 120  ~  ' + str(bin(120))
-		print "Expect: 3"
-		setIndex = self.cbo.getSetIndex(120)
-		print "Result:", str(setIndex)
+		pc += 1
+		print '\nBlock offset:', pc
+		print 'Expect: -1' 
+		bloff = self.cbo.getBlockOffset(pc)
+		print 'Result:', bloff
 
-		print '\nGet set index for 124  ~  ' + str(bin(124))
-		print "Expect: 3"
-		setIndex = self.cbo.getSetIndex(124)
-		print "Result:", str(setIndex)
+		pc = 96
+		setInd = 0
+		self.cbo.printCache()
 
-		print '\nGet set index for 128  ~  ' + str(bin(128))
-		print "Expect: 0"
-		setIndex = self.cbo.getSetIndex(128)
-		print "Result:", str(setIndex)
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 0' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
 
-		print '\nGet set index for 132  ~  ' + str(bin(132))
-		print "Expect: 0"
-		setIndex = self.cbo.getSetIndex(132)
-		print "Result:", str(setIndex)
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 0' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
 
-		print '\nGet set index for 136  ~  ' + str(bin(136))
-		print "Expect: 1"
-		setIndex = self.cbo.getSetIndex(136)
-		print "Result:", str(setIndex)
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 1' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
 
-		print '\nGet set index for 140  ~  ' + str(bin(140))
-		print "Expect: 1"
-		setIndex = self.cbo.getSetIndex(140)
-		print "Result:", str(setIndex)
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 1' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
 
-		print '\n>>> PHASE 2: Test hitting (or missing) memory addresses in fabricated cache.'\
-			'\nThis does NOT test data at the provided address, nor updating via memory at the'\
-			'\nprovided address.  This simply tests if the provided address EXISTS in cache or not.'
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 2' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
 
-		print '\nFABRICATED CACHE:'
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 2' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
+
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
+
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
+
+		pc += 4
+		print '\nSet index:', pc, ' ~ ', bin(pc)
+		print 'Expect: 0' 
+		setInd = self.cbo.getSetIndex(pc)
+		print 'Result:', setInd
+
+		pc = 96
+		tag = 0
+		self.cbo.printCache()
+
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 4
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 4
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 4
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 4
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 4
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 3' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 400
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 16' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 4
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 16' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		pc += 100
+		print '\nTag:', pc, ' ~ ', bin(pc)
+		print 'Expect: 19' 
+		tag = self.cbo.getTag(pc)
+		print 'Result:', tag
+
+		print '\n>>> PHASE 2'
+
 		self.cbo.fabTestCache()
 		self.cbo.printCache()
+		pc = 104
+		cAddr = [0, 0, 0]
 
-		hit = [None, None, None]
-		truth = False
-		# Hit returns address: [setIndex, block, tag, blockOff]
+		# 104
+		print '\nCache Address:', pc 
+		print 'Expect: [1, 0, 0]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
 
-		print "\nHIT - 96"
-		print "Expect: True"
-		hit = self.cbo.getCacheAddr(96)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
-		
-		print "\nHIT - 100"
-		print "Expect: True"
-		hit = self.cbo.getCacheAddr(100)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		pc += 4  #108
+		print '\nCache Address:', pc
+		print 'Expect: [1, 0, 1]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
 
-		print "\nHIT - 104"
-		print "Expect: True"
-		hit = self.cbo.getCacheAddr(104)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		pc += 4	#112
+		print '\nCache Address:', pc
+		print 'Expect: [2, 0, 0]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
 
-		print "\nHIT - 108"
-		print "Expect: True"
-		hit = self.cbo.getCacheAddr(108)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		pc += 4	#116
+		print '\nCache Address:', pc
+		print 'Expect: [2, 0, 1]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
 
-		print "\nHIT - 192"
-		print "Expect: True"
-		hit = self.cbo.getCacheAddr(192)
-		if hit[0] == None:
-			truth = False
-		else:
-			truth = True
-		print "Result:", truth
+		pc += 4	#120
+		print '\nCache Address:', pc
+		print 'Expect: [3, 0, 0]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
+
+		pc += 4	#124
+		print '\nCache Address:', pc
+		print 'Expect: [3, 0, 1]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
 
 		self.cbo.printCache()
+
+		pc += 4	#128
+		print '\nCache Address:', pc
+		print 'Expect: [0, 0, 0]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
+
+		pc += 4	#132
+		print '\nCache Address:', pc
+		print 'Expect: [0, 0, 1]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
+
+		pc += 4	#136
+		print '\nCache Address:', pc
+		print 'Expect: [1, 1, 0]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
+
+		pc += 4	#140
+		print '\nCache Address:', pc
+		print 'Expect: [1, 1, 1]'
+		cAddr = self.cbo.getCacheAddr(pc)
+		print 'Result:', cAddr
+
+		self.cbo.printCache()
+
+		# Testing for invalid bits.  Won't be useful later in programming, as it 
+		# will eventually automatically replace misses with data from memory.
+
+		# pc += 4	#144
+		# print '\nCache Address:', pc
+		# print 'Expect: [None, None, None]'
+		# cAddr = self.cbo.getCacheAddr(pc)
+		# print 'Result:', cAddr
+
+		# pc += 4	#148
+		# print '\nCache Address:', pc
+		# print 'Expect: [None, None, None]'
+		# cAddr = self.cbo.getCacheAddr(pc)
+		# print 'Result:', cAddr
+
+		# Testing for invalid addresses.  Won't be useful later in programming, as it 
+		# will eventually automatically replace misses with data from memory.
+
+		# pc += 100
+		# print '\nCache Address:', pc
+		# print 'Expect: [None, None, None]'
+		# cAddr = self.cbo.getCacheAddr(pc)
+		# print 'Result:', cAddr
+
+		self.cbo.printCache()
+		pc = 104
+		data = None
+
+		print '\nData at address', pc
+		print 'Expect: 1'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		pc += 4	# 108
+		print '\nData at address', pc
+		print 'Expect: 2'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		pc += 4 #112
+		print '\nData at address', pc
+		print 'Expect: 3'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		pc += 4 #116
+		print '\nData at address', pc
+		print 'Expect: 4'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		self.cbo.printCache()
+
+		pc += 4
+		print '\nData at address', pc
+		print 'Expect: 5'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		pc += 4
+		print '\nData at address', pc
+		print 'Expect: 6'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		pc = 136
+		print '\nData at address', pc
+		print 'Expect: 9'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		pc += 4
+		print '\nData at address', pc
+		print 'Expect: 10'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+		# Testing for invalid addresses.  Won't be useful later in programming, as it 
+		# will eventually automatically replace misses with data from memory.
+
+		pc += 4
+		print '\nData at address', pc
+		print 'Expect: None'
+		data = self.cbo.getData(pc)
+		print 'Result:', data
+
+
+
+
+		# print '\nFABRICATED CACHE:'
+		# self.cbo.fabTestCache()
+		# self.cbo.printCache()
+
+		# hit = [None, None, None]
+		# truth = False
+		# # Hit returns address: [setIndex, block, tag, blockOff]
+
+		# print "\nHIT - 96"
+		# print "Expect: True"
+		# hit = self.cbo.getCacheAddr(96)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
+		
+		# print "\nHIT - 100"
+		# print "Expect: True"
+		# hit = self.cbo.getCacheAddr(100)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
+
+		# print "\nHIT - 104"
+		# print "Expect: True"
+		# hit = self.cbo.getCacheAddr(104)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
+
+		# print "\nHIT - 108"
+		# print "Expect: True"
+		# hit = self.cbo.getCacheAddr(108)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
+
+		# print "\nHIT - 192"
+		# print "Expect: True"
+		# hit = self.cbo.getCacheAddr(192)
+		# if hit[0] == None:
+		# 	truth = False
+		# else:
+		# 	truth = True
+		# print "Result:", truth
+
+		# self.cbo.printCache()
 
 		# print "\nHIT - 184"
 		# print "Expect: False"
@@ -493,38 +750,31 @@ class TestUnits(object):
 		# 	truth = True
 		# print "Result:", truth
 
-		print '\n>>> PHASE 3: Test fetching data from cache and updating LRU bit.'
-		print 'Unlike phase 2, this test will update the memory based on a test file,'\
-			'\ntestCache.txt, which is simply numbers 1 - 16, starting at memory'\
-			'\naddress 100.'
+		# print '\n>>> PHASE 3: Test fetching data from cache and updating LRU bit.'
+		# print 'Unlike phase 2, this test will update the memory based on a test file,'\
+		# 	'\ntestCache.txt, which is simply numbers 1 - 16, starting at memory'\
+		# 	'\naddress 100.'
 
-		self.cbo.printCache()
+		# self.cbo.printCache()
 
-		self.cbo.testDataFetch(96, 501)
-		self.cbo.testDataFetch(100, 502)
-		self.cbo.testDataFetch(96, 501, 100, 502)
-		self.cbo.testDataFetch(192, 509)
-		self.cbo.testDataFetch(216, 515)
+		# self.cbo.testDataFetch(96, 501)
+		# self.cbo.testDataFetch(100, 502)
+		# self.cbo.testDataFetch(96, 501, 100, 502)
+		# self.cbo.testDataFetch(192, 509)
+		# self.cbo.testDataFetch(216, 515)
 
-		self.cbo.testDataFetch(200, 10)		# Previously 511 (word 0)
-		self.cbo.testDataFetch(212, 13)		# Previously 514 (word 1)
-		self.cbo.testDataFetch(120, 6, 124, 7)
+		# self.cbo.testDataFetch(200, 10)		# Previously 511 (word 0)
+		# self.cbo.testDataFetch(212, 13)		# Previously 514 (word 1)
+		# self.cbo.testDataFetch(120, 6, 124, 7)
 
-		print
-		self.cbo.clearCache()
-		self.cbo.printCache()
+		# print
+		# self.cbo.clearCache()
+		# self.cbo.printCache()
 
-		pc = 100
-		while pc < 224:
-			data = self.cbo.fetchData(pc)
-			print "\n>>> Data @ " + str(pc) + ": " + str(data)
-			pc += 4
-			self.cbo.printCache()
+		# pc = 100
+		# while pc < 224:
+		# 	data = self.cbo.fetchData(pc)
+		# 	print "\n>>> Data @ " + str(pc) + ": " + str(data)
+		# 	pc += 4
+		# 	self.cbo.printCache()
 
-
-
-
-	if __name__== "__main__":
-		main()
-		print
-		print
