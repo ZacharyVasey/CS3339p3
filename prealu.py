@@ -1,4 +1,4 @@
-#====================================================================================
+#####################################################################################
 # PreAlu
 # 	Holds 2 entries.  FIFO.  1 - oldest. 0 - newest.
 # 	What does it need?  All information necessary to perform arithmetic operations.
@@ -20,22 +20,22 @@
 #									-----------------
 #								1	| True	|  104	|
 #									-----------------
-#====================================================================================
+#####################################################################################
 class PreAlu(object):
 	def __init__(self):
 		self.aluBuff = [[None, None], [None, None]]
 
 	def printBuff(self):
-		print '\nPRE-ALU aluBuffER'
+		print '\nPRE-ALU'
 		print 'Entry 1:  ' + '[OLDEST - ' + str(self.aluBuff[0][0]) + ' | BDX - ' \
 			+ str(self.aluBuff[0][1]) + ']'
 		print 'Entry 2:  ' + '[OLDEST - ' + str(self.aluBuff[1][0]) + ' | BDX - ' \
 			+ str(self.aluBuff[1][1]) + ']'	
-
-	# If both entries are empty, empty neither, feed 1st.
-	# If ONE entry is empty, feed the empty, dump the full.
-	# If BOTH entries are full, empty the oldest, and feed NEITHER.
-
+	#################################################################################
+	# emptyBuff:	If both entries are empty, empty neither, feed 1st.  
+	#				If ONE entry is empty, feed the empty, dump the full.
+	#				If BOTH entries are full, empty the oldest, and feed NEITHER.
+	#################################################################################	
 	def emptyBuff(self):
 		retVal = -1
 		# Test if BOTH entries are full (defer to oldest).
@@ -68,7 +68,9 @@ class PreAlu(object):
 			self.aluBuff[1][0] = False		# Now other non-empty entry is oldest.
 			self.aluBuff[0][0] = True 		# And empty list is "young."		
 			return retVal		
-
+	#################################################################################
+	# feedBuff:	Feeds buffer and updates LRU.
+	#################################################################################	
 	def feedBuff(self, pc):
 		# Test if BOTH entries are empty.
 		if (self.aluBuff[0][1] == None) and (self.aluBuff[1][1] == None):
@@ -92,9 +94,3 @@ class PreAlu(object):
 			self.aluBuff[0][0] = False
 			return True
 		return False						# Failure to feed aluBuffer.
-
-
-
-
-
-

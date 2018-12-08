@@ -1,4 +1,4 @@
-#====================================================================================
+#####################################################################################
 # PreIss
 # 	Rather than doing the work of passing all the instruction data the mem and alu 
 #	units will need, here we pass the binData index, which gives access to the 
@@ -17,28 +17,35 @@
 #	Holds 4 entries.  NOT FIFO.  Program order, so there is no need to monitor
 # 	first in.  We pass binData indices, which are already - by their nature -  are 
 #	already in program order.
-#====================================================================================
+#####################################################################################
 class PreIss(object):
-	
 	def __init__(self):
 		self.preIssBuff = [None, None, None, None]
-
+	#################################################################################
+	# printBuff:	Prints current content of buffer.
+	#################################################################################	
 	def printBuff(self):
 		lines = '\nPRE-ISSUE BUFFER\n'
 		for priInd, pri in enumerate(self.preIssBuff):
-			lines += 'Entry ' + str(priInd) + ': ' + str(pri) + '\n'
+			lines += '\tEntry ' + str(priInd) + ': ' + str(pri) + '\n'
 		print lines
-
+	#################################################################################
+	# countEmpties:	counts number, if any, of empty buffer entries.
+	#################################################################################
 	def countEmpties(self):
 		c = 0;
 		for pri in self.preIssBuff:
 			if pri == None:
 				c += 1
 		return c
-
+	#################################################################################
+	# sortBuff:		Sorts buffer in descending size.
+	#################################################################################
 	def sortBuff(self):
 		self.preIssBuff.sort()
-
+	#################################################################################
+	# feedBuff:		Feeds the buffer after testing for empty entry.
+	#################################################################################
 	def feedBuff(self, bdx, bdx2 = None):
 		count = self.countEmpties()
 		if (bdx2 == None):
@@ -50,9 +57,9 @@ class PreIss(object):
 						return True		# Return success of feed.
 			# If bad empty test, return failure.  
 			else:
-				print 'ERROR: attempt to feed full buffer.  The instruction(s)' \
-					+ ' should NOT have been \nfetched in the first place if ' \
-					+ 'there is no room if the pre-issue buffer!'
+				# print 'ERROR: attempt to feed full buffer.  The instruction(s)' \
+				# 	+ ' should NOT have been \nfetched in the first place if ' \
+				# 	+ 'there is no room if the pre-issue buffer!'
 				return False
 		else:
 			# If good empty test, do work to feed two entries.
@@ -69,11 +76,13 @@ class PreIss(object):
 			# The instructions should have never have been fetched in the 
 			# FIRST place if no room in buffer.  
 			else:
-				print 'ERROR: attempt to feed full buffer.  The instruction(s)' \
-					+ ' should NOT have been \nfetched in the first place if ' \
-					+ 'there is no room if the pre-issue buffer!'				
+				# print 'ERROR: attempt to feed full buffer.  The instruction(s)' \
+				# 	+ ' should NOT have been \nfetched in the first place if ' \
+				# 	+ 'there is no room if the pre-issue buffer!'				
 				return False
-
+	#################################################################################
+	# emptyBuff:	Empties the buffer based on a index and pc value.
+	#################################################################################
 	def emptyBuff(self, priInd, pri):
 		if self.preIssBuff[priInd] == pri:
 			self.preIssBuff[priInd] = None

@@ -1,12 +1,13 @@
-#========================================================================
-# Class RegFile
-# Holds the 32 register states that are manipulated upon by writeback.
-#========================================================================
+#####################################################################################
+# RegFile Class:  	Manages the register file.  Stores 32 register entries.
+#####################################################################################
 class RegFile(object):
 	def __init__(self):
 		# print 'Testing RegFile().init...'   # TESTPRINT
 		self.regFile = [0] * 32
-
+	#################################################################################
+	# printRegFile:		Prints current contents.
+	#################################################################################
 	def printRegFile(self):
 		#print 'Testing printRegFile()...'
 		lines = '\nREGISTER FILE\n'

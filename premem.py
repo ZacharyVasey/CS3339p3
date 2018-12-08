@@ -1,4 +1,4 @@
-#====================================================================================
+#####################################################################################
 # PreMem
 # 	Holds 2 entries.  FIFO.  1 - oldest. 0 - newest.
 #	Armed with the static BDX, PreMem can reference BinData for all the data it needs
@@ -12,22 +12,23 @@
 #									-----------------
 #								1	| True	|  104	|
 #									-----------------
-#====================================================================================
+#####################################################################################
 class PreMem(object):
 	def __init__(self):
 		self.memBuff = [[None, None], [None, None]]
 
 	def printBuff(self):
-		print '\nPRE-MEM memBuffER'
+		print '\nPRE-MEM'
 		print 'Entry 1:  ' + '[OLDEST - ' + str(self.memBuff[0][0]) + ' | BDX - ' \
 			+ str(self.memBuff[0][1]) + ']'
 		print 'Entry 2:  ' + '[OLDEST - ' + str(self.memBuff[1][0]) + ' | BDX - ' \
 			+ str(self.memBuff[1][1]) + ']'	
 
-	# If both entries are empty, empty neither, feed 1st.
-	# If ONE entry is empty, feed the empty, dump the full.
-	# If BOTH entries are full, empty the oldest, and feed NEITHER.
-
+	#################################################################################
+	# emptyBuff:	If both entries are empty, empty neither, feed 1st.  
+	#				If ONE entry is empty, feed the empty, dump the full.
+	#				If BOTH entries are full, empty the oldest, and feed NEITHER.
+	#################################################################################	
 	def emptyBuff(self):
 		retVal = -1
 		# Test if BOTH entries are full (defer to oldest).
@@ -60,7 +61,9 @@ class PreMem(object):
 			self.memBuff[1][0] = False		# Now other non-empty entry is oldest.
 			self.memBuff[0][0] = True 		# And empty list is "young."		
 			return retVal		
-
+	#################################################################################
+	# feedBuff:	Feeds buffer and updates LRU.
+	#################################################################################
 	def feedBuff(self, pc):
 		# Test if BOTH entries are empty.
 		if (self.memBuff[0][1] == None) and (self.memBuff[1][1] == None):
